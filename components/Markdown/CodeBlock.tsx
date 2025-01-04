@@ -1,6 +1,6 @@
 import { IconCheck, IconClipboard, IconDownload } from '@tabler/icons-react';
 import { FC, memo, useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Prism, SyntaxHighlighterProps } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import { useTranslation } from 'next-i18next';
@@ -14,6 +14,8 @@ interface Props {
   language: string;
   value: string;
 }
+
+const SyntaxHighlighter = Prism as any as React.FC<SyntaxHighlighterProps>;
 
 export const CodeBlock: FC<Props> = memo(({ language, value }) => {
   const { t } = useTranslation('markdown');
