@@ -39,9 +39,47 @@ interface Props {
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const { t } = useTranslation('chat');
   const [gpuSlug, setGpuSlug] = useState<string>('');
-  const [instanceDetails, setInstanceDetails] = useState<{
-    [key: string]: unknown;
-  }>({});
+  interface LLMDetails {
+    _id: string;
+    model_name: string;
+    variant: string;
+    size: number;
+    size_unit: string;
+    architecture: string;
+    huggingface_id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }
+
+  interface InstanceDetails {
+    endpoints: string[];
+    deletedAt: null | string;
+    _id: string;
+    name: string;
+    gpu_type: string;
+    user: string;
+    llm: LLMDetails;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    duration: string;
+    hdd: number;
+    http_ports: string;
+    is_reserved: boolean;
+    machine_id: number;
+    num_cpus: null | number;
+    num_gpus: number;
+    script_args: string;
+    script_id: string;
+    ssh_str: string;
+    status: string;
+    template: string;
+    url: string;
+    gpu_slug: string;
+  }
+
+  const [instanceDetails, setInstanceDetails] = useState<InstanceDetails>();
 
   const {
     state: {
@@ -94,7 +132,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         homeDispatch({ field: 'loading', value: true });
         homeDispatch({ field: 'messageIsStreaming', value: true });
         const chatBody = {
-          model: instanceDetails?.llm?.huggingface_id,
+          model: instanceDetails?.llm?.huggingface_id || '',
           messages: updatedConversation.messages,
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
