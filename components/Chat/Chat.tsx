@@ -100,7 +100,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         const controller = new AbortController();
         const backBaseUrl =
           (process.env.NEXT_PUBLIC_MLOPS_BASE_URL || '') +
-          '/v1/instance/chat/' +
+          '/v0/instance/chat/' +
           gpuSlug;
         const response = await fetch(backBaseUrl, {
           method: 'POST',
