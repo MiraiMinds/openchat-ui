@@ -306,9 +306,9 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
     const hostname = window.location.hostname;
     // Split hostname by dots and get first part
     const parts = hostname.split('.');
-    setGpuSlug('heuristic_gauss');
+    setGpuSlug(parts[0]);
 
-    getInstanceDetail('heuristic_gauss');
+    getInstanceDetail(parts[0]);
   }, []);
 
   return (
