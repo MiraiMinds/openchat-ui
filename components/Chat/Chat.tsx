@@ -39,6 +39,9 @@ interface Props {
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const { t } = useTranslation('chat');
   const [gpuSlug, setGpuSlug] = useState<string>('');
+  const [instanceDetails, setInstanceDetails] = useState<{
+    [key: string]: unknown;
+  }>({});
 
   const {
     state: {
@@ -91,7 +94,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         homeDispatch({ field: 'loading', value: true });
         homeDispatch({ field: 'messageIsStreaming', value: true });
         const chatBody = {
-          model: 'mistralai/Mistral-7B-Instruct-v0.3',
+          model: instanceDetails?.llm?.huggingface_id,
           messages: updatedConversation.messages,
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
@@ -163,6 +166,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
       }
     },
     [
+      instanceDetails,
       gpuSlug,
       apiKey,
       conversations,
@@ -250,11 +254,23 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
     };
   }, [messagesEndRef]);
 
+  const getInstanceDetail = async (gpu_slug_name: string) => {
+    const instanceDetailBaseUrl =
+      (process.env.NEXT_PUBLIC_MLOPS_BASE_URL || '') +
+      '/v0/user/instance/gpu-slug/' +
+      gpu_slug_name;
+    const response = await fetch(instanceDetailBaseUrl);
+    const data = await response.json();
+    setInstanceDetails(data.result);
+  };
+
   useEffect(() => {
     const hostname = window.location.hostname;
     // Split hostname by dots and get first part
     const parts = hostname.split('.');
-    setGpuSlug(parts[0]);
+    setGpuSlug('heuristic_gauss');
+
+    getInstanceDetail('heuristic_gauss');
   }, []);
 
   return (
