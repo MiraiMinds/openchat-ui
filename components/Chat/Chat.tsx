@@ -178,7 +178,10 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           ...updatedConversation,
           messages: [
             ...(updatedConversation.messages || []),
-            { role: 'assistant', content: data.choices[0].message.content },
+            {
+              role: 'assistant',
+              content: data.result.choices[0].message.content,
+            },
           ],
         };
         homeDispatch({
@@ -306,9 +309,9 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
     const hostname = window.location.hostname;
     // Split hostname by dots and get first part
     const parts = hostname.split('.');
-    setGpuSlug(parts[0]);
+    setGpuSlug('wonderful_nobel');
 
-    getInstanceDetail(parts[0]);
+    getInstanceDetail('wonderful_nobel');
   }, []);
 
   return (
