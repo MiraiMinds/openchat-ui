@@ -132,7 +132,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         homeDispatch({ field: 'loading', value: true });
         homeDispatch({ field: 'messageIsStreaming', value: true });
         const chatBody = {
-          model: instanceDetails?.llm?.huggingface_id || '',
+          model: instanceDetails?.llm || '',
           messages: updatedConversation.messages,
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
